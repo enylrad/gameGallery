@@ -20,6 +20,7 @@ fabric.properties
 .idea
 **/node_modules/*
 **/.firebaserc
+google-services.json
 
 ### Firebase Patch ###
 .runtimeconfig.json
@@ -312,4 +313,3 @@ obj/
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.gitignore.io/api/linux,macos,kotlin,windows,intellij,firebase,crashlytics,androidstudio

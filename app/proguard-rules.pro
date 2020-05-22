@@ -19,3 +19,38 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Glide Start
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+
+# Uncomment for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+# Glide End
+# Chuck Start
+
+-keep class com.readystatesoftware.chuck.internal.data.HttpTransaction { *; }
+-keep class android.support.v7.widget.SearchView { *; }
+
+# Chuck End
+# Lottie Start
+
+-dontwarn com.airbnb.lottie.**
+-keep class com.airbnb.lottie.** {*;}
+
+# Lottie End
+# Timber Start
+
+-dontwarn org.jetbrains.annotations.**
+
+#Timber End
