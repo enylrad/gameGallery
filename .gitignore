@@ -313,3 +313,7 @@ obj/
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+## Api Credentials ##
+
+api-credentials.properties
+

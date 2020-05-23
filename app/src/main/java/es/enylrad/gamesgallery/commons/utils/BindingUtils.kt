@@ -25,7 +25,7 @@ class FragmentBinding<out T : ViewDataBinding>(
 
     private fun createBinding(
         activity: Fragment
-    ): T = DataBindingUtil.inflate(LayoutInflater.from(activity.context),resId,null,true)
+    ): T = DataBindingUtil.inflate(LayoutInflater.from(activity.context), resId, null, true)
 }
 
 /**

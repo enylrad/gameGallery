@@ -4,6 +4,8 @@ import android.app.Application
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import es.enylrad.gamesgallery.BuildConfig
 import es.enylrad.gamesgallery.commons.di.firestoreModule
+import es.enylrad.gamesgallery.commons.di.preferencesModule
+import es.enylrad.gamesgallery.commons.di.retrofitModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -30,7 +32,9 @@ class AppController : Application() {
             androidContext(this@AppController)
             modules(
                 listOf(
-                    firestoreModule
+                    firestoreModule,
+                    retrofitModule,
+                    preferencesModule
                 )
             )
         }
