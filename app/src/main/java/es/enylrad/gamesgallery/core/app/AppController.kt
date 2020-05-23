@@ -1,6 +1,7 @@
 package es.enylrad.gamesgallery.core.app
 
 import android.app.Application
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import es.enylrad.gamesgallery.BuildConfig
 import es.enylrad.gamesgallery.commons.di.firestoreModule
 import org.koin.android.ext.koin.androidContext
@@ -13,8 +14,13 @@ class AppController : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        initCrashlytics()
         initKoin()
         initTimber()
+    }
+
+    private fun initCrashlytics() {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 
     private fun initKoin() {

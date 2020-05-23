@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.enylrad.gamesgallery">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".core.app.AppController"
         android:allowBackup="true"
