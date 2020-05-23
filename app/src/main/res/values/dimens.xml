@@ -2,4 +2,6 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="adapter_elevation_game_unselected">4dp</dimen>
+    <dimen name="adapter_elevation_game_select">6dp</dimen>
 </resources>

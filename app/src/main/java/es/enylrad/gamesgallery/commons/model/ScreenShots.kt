@@ -5,7 +5,7 @@ import com.google.firebase.firestore.PropertyName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Game(
-    @PropertyName("name")
-    val name: String = ""
+data class ScreenShots(
+    @PropertyName("image_id")
+    val image_id: String = ""
 ) : Parcelable
