@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="es.enylrad.gamesgallery.ui.dashboard.DashboardViewModel" />
@@ -18,13 +19,13 @@
             android:id="@+id/rv_games"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layoutAnimation="@anim/grid_layout_animation_from_bottom"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2"
             tools:itemCount="6"
             tools:listitem="@layout/item_game" />
     </androidx.constraintlayout.widget.ConstraintLayout>

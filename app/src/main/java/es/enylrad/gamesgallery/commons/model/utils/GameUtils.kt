@@ -3,25 +3,34 @@ package es.enylrad.gamesgallery.commons.model.utils
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import es.enylrad.gamesgallery.commons.model.ScreenShots
+import es.enylrad.gamesgallery.R
+import es.enylrad.gamesgallery.commons.model.CoverEntity
 
 
-@BindingAdapter("gameCover")
-fun loadImageGame(view: ImageView, screenshots: MutableList<ScreenShots>?) {
+@BindingAdapter("gameCover", "gameScreens")
+fun loadImageGame(view: ImageView, cover: CoverEntity?, screenShots: List<CoverEntity>?) {
 
-    var screenShot = ScreenShots()
-    for (screenshot in screenshots ?: listOf<ScreenShots>()) {
-        if (screenshot.image_id.isNotBlank()) {
-            screenShot = screenshot
+    if (cover?.image_id != null) {
+        setImageIGDB(cover.image_id, view)
+        return
+    } else if (screenShots != null && screenShots.isNotEmpty()) {
+        for (image in screenShots) {
+            if (!image.image_id.isNullOrBlank()) {
+                setImageIGDB(image.image_id, view)
+                return
+            }
         }
     }
-    if (screenShot.image_id.isNotBlank()) {
-        val size = "cover_big"
-        val u = "https://images.igdb.com/igdb/image/upload/t_$size/${screenShot.image_id}.jpg"
 
-        Glide.with(view.context)
-            .load(u)
-            .into(view)
-    }
+    view.setImageResource(R.drawable.default_cover)
 
+}
+
+private fun setImageIGDB(imageId: String, view: ImageView) {
+    val size = "cover_big"
+    val url = "https://images.igdb.com/igdb/image/upload/t_$size/${imageId}.jpg"
+
+    Glide.with(view.context)
+        .load(url)
+        .into(view)
 }

@@ -11,5 +11,5 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST("/games")
-    fun getGames(@Body body: String = "fields id, name, summary, created_at, updated_at, screenshots.*; limit 10;"): Call<MutableList<GameEntity>>
+    fun getGames(@Body body: String = "fields id, name, summary, cover.image_id, created_at, updated_at, screenshots.*; limit 100;"): Call<MutableList<GameEntity>>
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.utils.FragmentBinding
 import es.enylrad.gamesgallery.core.base.BaseFragment
@@ -37,8 +38,8 @@ class DashboardFragment : BaseFragment() {
 
         adapter = GameAdapter(viewModel)
 
+        binding.rvGames.layoutManager = GridLayoutManager(context, 2)
         binding.rvGames.adapter = adapter
-
         viewModel.games.observe(viewLifecycleOwner,
             Observer {
                 adapter.submitList(it)
