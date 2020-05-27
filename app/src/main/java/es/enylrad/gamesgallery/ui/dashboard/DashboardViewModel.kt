@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import es.enylrad.gamesgallery.commons.model.GameEntity
 import es.enylrad.gamesgallery.commons.network.ApiService
 import es.enylrad.gamesgallery.commons.utils.callbackResponse
+import es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter
 
 class DashboardViewModel(apiService: ApiService) : ViewModel() {
-    var selected: MutableLiveData<GameEntity>? = null
 
     private val _games = MutableLiveData<MutableList<GameEntity>>().apply {
         apiService.getGames().enqueue(
@@ -24,19 +24,46 @@ class DashboardViewModel(apiService: ApiService) : ViewModel() {
         )
     }
 
-    val games: LiveData<MutableList<GameEntity>> = _games
-
-    fun onItemClick(index: Int?) {
-        val db: GameEntity? = getGameAt(index)
-        selected?.value = db
-    }
-
-    fun getGameAt(index: Int?): GameEntity? {
+    private fun getGameAt(index: Int): GameEntity? {
         val gamesValue = games.value
-        return if (gamesValue != null && index != null && gamesValue.size > index) {
+        return if (gamesValue != null && gamesValue.size > index) {
             gamesValue[index]
         } else {
             null
         }
     }
+
+    val games: LiveData<MutableList<GameEntity>> = _games
+
+    private val _selected = MutableLiveData<GameEntity?>()
+
+    val selected: MutableLiveData<GameEntity?> = _selected
+
+    fun onItemClick(index: Int) {
+        val db: GameEntity? = getGameAt(index)
+        _selected.value = db
+    }
+
+    private val _typeAdapter = MutableLiveData<GameTypeAdapter>()
+
+    init {
+        _typeAdapter.value = GameTypeAdapter.GridGameAdapter()
+    }
+
+    val typeAdapter: MutableLiveData<GameTypeAdapter> = _typeAdapter
+
+    fun changeViewList(type: Int) {
+        when (type) {
+            GameTypeAdapter.CardGameAdapter().type -> {
+                _typeAdapter.value = GameTypeAdapter.CardGameAdapter()
+            }
+            GameTypeAdapter.SimpleGameAdapter().type -> {
+                _typeAdapter.value = GameTypeAdapter.SimpleGameAdapter()
+            }
+            GameTypeAdapter.GridGameAdapter().type -> {
+                _typeAdapter.value = GameTypeAdapter.GridGameAdapter()
+            }
+        }
+    }
+
 }

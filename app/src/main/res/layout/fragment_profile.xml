@@ -7,13 +7,13 @@
 
         <variable
             name="viewmodel"
-            type="es.enylrad.gamesgallery.ui.library.LibraryViewModel" />
+            type="es.enylrad.gamesgallery.ui.profile.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.library.LibraryFragment">
+        tools:context=".ui.profile.ProfileFragment">
 
         <TextView
             android:id="@+id/text_library"

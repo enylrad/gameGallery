@@ -6,27 +6,95 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="type"
+            type="es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter" />
+
+        <variable
+            name="viewModel"
             type="es.enylrad.gamesgallery.ui.dashboard.DashboardViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         tools:context=".ui.dashboard.DashboardFragment">
 
         <es.enylrad.gamesgallery.commons.view.GridRecyclerView
             android:id="@+id/rv_games"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layoutAnimation="@anim/grid_layout_animation_from_bottom"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
+            android:paddingTop="55dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="6"
-            tools:listitem="@layout/item_game" />
+            tools:listitem="@layout/item_game_normal" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_view_type"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:animateLayoutChanges="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.5"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_card_view"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/set_big_card_views_in_list"
+                android:onClick="@{() -> viewModel.changeViewList(1)}"
+                android:padding="5dp"
+                android:src="@drawable/ic_card_black_24"
+                app:hideCard="@{viewModel.typeAdapter.type}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_list_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_list_view"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/set_list_items"
+                android:onClick="@{() -> viewModel.changeViewList(2)}"
+                android:padding="5dp"
+                android:src="@drawable/ic_list_black_24"
+                app:hideList="@{viewModel.typeAdapter.type}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_grid_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_grid_view"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/set_grid_view_in_list"
+                android:onClick="@{() -> viewModel.changeViewList(0)}"
+                android:padding="5dp"
+                android:src="@drawable/ic_grid_black_24"
+                app:hideGrid="@{viewModel.typeAdapter.type}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

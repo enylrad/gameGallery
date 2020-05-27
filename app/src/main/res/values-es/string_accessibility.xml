@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cover_game_accessibility">Portada del juego</string>
+    <string name="set_big_card_views_in_list">Configura la lista con objetos grandes</string>
+    <string name="set_list_items">Configura la lista con objetos pequeños</string>
+    <string name="set_grid_view_in_list">Configura la lista en forma de cuadricula</string>
+</resources>

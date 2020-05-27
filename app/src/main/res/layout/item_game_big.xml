@@ -17,8 +17,9 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardEvent"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:onClick="@{() -> viewModel.onItemClick(position)}"
         android:stateListAnimator="@animator/selector_item_game"
         app:cardCornerRadius="15dp"
         app:cardElevation="@dimen/adapter_elevation_game_unselected"
@@ -32,6 +33,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/cover_game_accessibility"
                 android:scaleType="centerCrop"
                 app:gameCover="@{viewModel.games.get(position).cover}"
                 app:gameScreens="@{viewModel.games.get(position).screenshots}"
@@ -50,7 +52,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="0dp"

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import es.enylrad.gamesgallery.R
@@ -28,7 +30,7 @@ class DashboardFragment : BaseFragment() {
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
             binding.lifecycleOwner = this@DashboardFragment
-            binding.viewmodel = viewModel
+            binding.viewModel = viewModel
 
             setRecyclerView()
         }
@@ -37,12 +39,24 @@ class DashboardFragment : BaseFragment() {
     private fun setRecyclerView() {
 
         adapter = GameAdapter(viewModel)
-
-        binding.rvGames.layoutManager = GridLayoutManager(context, 2)
         binding.rvGames.adapter = adapter
+        viewModel.typeAdapter.observe(viewLifecycleOwner,
+            Observer {
+                binding.rvGames.layoutManager = GridLayoutManager(context, it.column)
+                adapter.changeTypeAdapter(it)
+            })
         viewModel.games.observe(viewLifecycleOwner,
             Observer {
+                binding.rvGames.layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                    context,
+                    R.anim.grid_layout_animation_from_bottom
+                )
                 adapter.submitList(it)
+            })
+
+        viewModel.selected.observe(viewLifecycleOwner,
+            Observer {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
             })
     }
 }

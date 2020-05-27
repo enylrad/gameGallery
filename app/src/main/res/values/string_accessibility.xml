@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cover_game_accessibility">Cover game</string>
+    <string name="set_big_card_views_in_list">Set big card views in list</string>
+    <string name="set_list_items">Set list items</string>
+    <string name="set_grid_view_in_list">Set grid view in list</string>
+</resources>

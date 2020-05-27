@@ -1,4 +1,4 @@
-package es.enylrad.gamesgallery.ui.library
+package es.enylrad.gamesgallery.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import es.enylrad.gamesgallery.commons.model.GameEntity
 import es.enylrad.gamesgallery.commons.tag.GAMES
 import timber.log.Timber
 
-class LibraryViewModel(firestore: FirebaseFirestore) : ViewModel() {
+class ProfileViewModel(firestore: FirebaseFirestore) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         firestore

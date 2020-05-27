@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GamesGallery</string>
-    <string name="title_library">My Games</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_dashboard">Explore</string>
 </resources>
