@@ -6,29 +6,25 @@
     <data>
 
         <variable
-            name="viewmodel"
-            type="es.enylrad.gamesgallery.ui.profile.ProfileViewModel" />
+            name="viewModel"
+            type="es.enylrad.gamesgallery.ui.library.LibraryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.profile.ProfileFragment">
+        tools:context=".ui.library.LibraryFragment">
 
-        <TextView
-            android:id="@+id/text_library"
-            android:layout_width="match_parent"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_coming_soon"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@{viewmodel.text}"
-            android:textAlignment="center"
-            android:textSize="20sp"
+            android:layout_margin="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Test" />
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/lottie_comming_soon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

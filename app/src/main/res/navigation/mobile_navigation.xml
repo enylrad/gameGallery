@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_library"
-        android:name="es.enylrad.gamesgallery.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        android:name="es.enylrad.gamesgallery.ui.library.LibraryFragment"
+        android:label="@string/title_library"
+        tools:layout="@layout/fragment_library" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

@@ -1,4 +1,4 @@
-package es.enylrad.gamesgallery.ui.profile
+package es.enylrad.gamesgallery.ui.library
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.utils.FragmentBinding
 import es.enylrad.gamesgallery.core.base.BaseFragment
-import es.enylrad.gamesgallery.databinding.FragmentProfileBinding
+import es.enylrad.gamesgallery.databinding.FragmentLibraryBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment : BaseFragment() {
+class LibraryFragment : BaseFragment() {
 
-    override val viewModel by viewModel<ProfileViewModel>()
+    override val viewModel by viewModel<LibraryViewModel>()
 
-    override val binding by FragmentBinding<FragmentProfileBinding>(R.layout.fragment_profile)
+    override val binding by FragmentBinding<FragmentLibraryBinding>(R.layout.fragment_library)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +22,12 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
-            binding.lifecycleOwner = this@ProfileFragment
-            binding.viewmodel = viewModel
+            binding.lifecycleOwner = this@LibraryFragment
+            binding.viewModel = viewModel
+
+            binding.lottieComingSoon.setOnClickListener {
+                binding.lottieComingSoon.playAnimation()
+            }
         }
     }
 }

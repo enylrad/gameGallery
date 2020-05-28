@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import es.enylrad.gamesgallery.MainActivity
+import es.enylrad.gamesgallery.ui.MainActivity
 
 abstract class BaseFragment : Fragment() {
 

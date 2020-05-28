@@ -2,7 +2,8 @@ package es.enylrad.gamesgallery.commons.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import es.enylrad.gamesgallery.ui.profile.ProfileViewModel
+import es.enylrad.gamesgallery.ui.MainViewModel
+import es.enylrad.gamesgallery.ui.library.LibraryViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -11,7 +12,10 @@ val firestoreModule = module {
     single { provideFirestore() }
 
     viewModel {
-        ProfileViewModel(get())
+        LibraryViewModel(get())
+    }
+    viewModel {
+        MainViewModel(get(), get())
     }
 }
 

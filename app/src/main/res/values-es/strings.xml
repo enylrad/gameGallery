@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">GamesGallery</string>
-    <string name="title_profile">Pefil</string>
+    <string name="title_library">Galería</string>
     <string name="title_dashboard">Explorar</string>
 </resources>
