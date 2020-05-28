@@ -10,7 +10,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import es.enylrad.gamesgallery.R
+import es.enylrad.gamesgallery.commons.model.UserEntity
 import es.enylrad.gamesgallery.commons.model.utils.createUser
 import es.enylrad.gamesgallery.commons.utils.ActivityBindingProperty
 import es.enylrad.gamesgallery.core.base.BaseActivity
@@ -30,6 +34,8 @@ class MainActivity : BaseActivity() {
     override val binding by ActivityBindingProperty<ActivityMainBinding>(R.layout.activity_main)
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
+    private var mAuth: FirebaseAuth? = null
+
     private var mGoogleAccount: GoogleSignInAccount? = null
 
     private val navController: NavController by lazy {
@@ -43,13 +49,21 @@ class MainActivity : BaseActivity() {
 
         setNavController()
         configGoogleSignInClient()
+        configFirebaseAuth()
         configBtnProfile()
     }
 
     override fun onStart() {
         super.onStart()
         val account: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
-        updateUI(account)
+        if (account != null) {
+            mAuth?.currentUser?.let {
+                updateUI(account)
+            } ?: signOut()
+        } else {
+            updateUI(null)
+        }
+
     }
 
     private fun setNavController() {
@@ -64,10 +78,16 @@ class MainActivity : BaseActivity() {
 
     private fun configGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            // Check SHA1 in
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestProfile()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun configFirebaseAuth() {
+        mAuth = FirebaseAuth.getInstance()
     }
 
     private fun updateUI(account: GoogleSignInAccount?) {
@@ -76,8 +96,8 @@ class MainActivity : BaseActivity() {
             val user = account.createUser()
             viewModel.updateUser(user)
         } else {
-            Timber.d("No Updated")
-            // TODO
+            val user = UserEntity()
+            viewModel.updateUser(user)
         }
     }
 
@@ -89,15 +109,34 @@ class MainActivity : BaseActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account)
+            firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            snackBar(getString(R.string.auth_fail))
             Timber.w("signInResult:failed code=${e.statusCode}")
             updateUI(null)
         }
+    }
+
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        Timber.d("firebaseAuthWithGoogle: ${account.id}")
+
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        mAuth
+            ?.signInWithCredential(credential)
+            ?.addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Timber.d("signInWithCredential: success")
+                    val user = mAuth!!.currentUser!!
+                    viewModel.createUser(account.createUser(), user.uid)
+                    updateUI(account)
+
+                } else {
+                    snackBar(getString(R.string.auth_fail))
+                    Timber.w("signInWithCredential:failure ${task.exception}")
+                    updateUI(null)
+                }
+            } ?: updateUI(null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,4 +149,15 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun snackBar(text: String) {
+        Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        mGoogleSignInClient?.signOut()
+            ?.addOnCompleteListener(this) {
+                updateUI(null)
+            }
+    }
 }

@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import es.enylrad.gamesgallery.commons.model.UserEntity
+import es.enylrad.gamesgallery.commons.tag.USERS
+import timber.log.Timber
 
 class MainViewModel(
-    firestore: FirebaseFirestore,
+    private val firestore: FirebaseFirestore,
     sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
@@ -16,10 +19,25 @@ class MainViewModel(
 
     val user: LiveData<UserEntity> = _user
 
+    fun createUser(userEntity: UserEntity, uid: String) {
+        firestore
+            .collection(USERS)
+            .document(uid)
+            .set(userEntity, SetOptions.merge())
+            .addOnSuccessListener {
+                Timber.d("Create user: Success")
+            }
+            .addOnCanceledListener {
+                Timber.d("Create user: Cancel")
+            }
+            .addOnFailureListener { exception ->
+                Timber.d(exception)
+            }
+    }
+
     fun updateUser(userEntity: UserEntity) {
         _user.apply {
             value = userEntity
         }
     }
-
 }
