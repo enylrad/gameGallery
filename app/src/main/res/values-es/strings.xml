@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">GamesGallery</string>
+
+    <!--Navigation-->
     <string name="title_library">Galería</string>
     <string name="title_dashboard">Explorar</string>
-    <string name="auth_fail">Ha ocurrido algún error.</string>
+    <string name="title_profile">Perfil</string>
+
+    <!--Errors-->
+    <string name="fail_auth">Ha ocurrido algún error al autencicarse.</string>
 </resources>

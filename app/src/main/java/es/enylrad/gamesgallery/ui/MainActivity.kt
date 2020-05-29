@@ -1,7 +1,9 @@
 package es.enylrad.gamesgallery.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,6 +15,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.model.UserEntity
 import es.enylrad.gamesgallery.commons.model.utils.createUser
@@ -50,7 +53,15 @@ class MainActivity : BaseActivity() {
         setNavController()
         configGoogleSignInClient()
         configFirebaseAuth()
+        setListenerChangeFragment()
         configBtnProfile()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let {
+            getDynamicLink(intent)
+        }
     }
 
     override fun onStart() {
@@ -72,17 +83,25 @@ class MainActivity : BaseActivity() {
 
     private fun configBtnProfile() {
         binding.toolbar.btnProfile.setOnClickListener {
-            signIn()
+            if (mAuth?.currentUser == null) {
+                signIn()
+            } else {
+                launchProfile()
+            }
         }
+    }
+
+    private fun launchProfile() {
+        navController.navigate(R.id.profile_fragment)
     }
 
     private fun configGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            // Check SHA1 in
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestProfile()
             .build()
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
@@ -94,10 +113,10 @@ class MainActivity : BaseActivity() {
         mGoogleAccount = account
         if (account != null) {
             val user = account.createUser()
-            viewModel.updateUser(user)
+            viewModel.refreshUser(user)
         } else {
             val user = UserEntity()
-            viewModel.updateUser(user)
+            viewModel.refreshUser(user)
         }
     }
 
@@ -111,7 +130,7 @@ class MainActivity : BaseActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
-            snackBar(getString(R.string.auth_fail))
+            snackBar(getString(R.string.fail_auth))
             Timber.w("signInResult:failed code=${e.statusCode}")
             updateUI(null)
         }
@@ -132,21 +151,11 @@ class MainActivity : BaseActivity() {
                     updateUI(account)
 
                 } else {
-                    snackBar(getString(R.string.auth_fail))
-                    Timber.w("signInWithCredential:failure ${task.exception}")
+                    snackBar(getString(R.string.fail_auth))
+                    Timber.w("signInWithCredential: failure ${task.exception}")
                     updateUI(null)
                 }
             } ?: updateUI(null)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            RC_SIGN_IN -> {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                handleSignInResult(task)
-            }
-        }
     }
 
     private fun snackBar(text: String) {
@@ -159,5 +168,54 @@ class MainActivity : BaseActivity() {
             ?.addOnCompleteListener(this) {
                 updateUI(null)
             }
+    }
+
+    private fun setListenerChangeFragment() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.profile_fragment -> {
+                    visibilityToolbar(View.GONE)
+                    visibilityNavigationBar(View.GONE)
+                }
+                else -> {
+                    visibilityToolbar(View.VISIBLE)
+                    visibilityNavigationBar(View.VISIBLE)
+                }
+            }
+        }
+    }
+
+    private fun visibilityToolbar(visibility: Int) {
+        binding.toolbar.toolbarApp.visibility = visibility
+    }
+
+    private fun visibilityNavigationBar(visibility: Int) {
+        binding.navView.visibility = visibility
+    }
+
+    private fun getDynamicLink(intent: Intent) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+                // TODO
+                Timber.d(deepLink.toString())
+            }
+            .addOnFailureListener { exception ->
+                Timber.e("getDynamicLink: OnFailure $exception")
+            }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_SIGN_IN -> {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                handleSignInResult(task)
+            }
+        }
     }
 }

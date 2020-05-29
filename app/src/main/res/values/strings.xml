@@ -1,6 +1,16 @@
 <resources>
-    <string name="app_name">GamesGallery</string>
+    <!--App-->
+    <string name="app_name" translatable="false">GG</string>
+
+    <!--URL-->
+    <string name="url_dynamic_link_web" translatable="false">"https://david.dev"</string>
+    <string name="url_dynamic_link_share" translatable="false">"https://ggallery.page.link"</string>
+
+    <!--Fragments Title-->
     <string name="title_library">Library</string>
     <string name="title_dashboard">Explore</string>
-    <string name="auth_fail">Authentication Failed.</string>
+    <string name="title_profile">Profile</string>
+
+    <!--Errors-->
+    <string name="fail_auth">Authentication Failed.</string>
 </resources>

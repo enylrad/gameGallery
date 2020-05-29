@@ -10,3 +10,9 @@ fun GoogleSignInAccount.createUser(): UserEntity {
         image = photoUrl.toString()
     )
 }
+
+fun UserEntity.update(userEntity: UserEntity) {
+    name = userEntity.name
+    image = userEntity.image
+    friends = userEntity.friends
+}

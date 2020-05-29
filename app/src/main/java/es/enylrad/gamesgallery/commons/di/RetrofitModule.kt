@@ -5,10 +5,8 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import es.enylrad.gamesgallery.BuildConfig
 import es.enylrad.gamesgallery.commons.network.ApiService
 import es.enylrad.gamesgallery.commons.tag.BASE_URL
-import es.enylrad.gamesgallery.ui.dashboard.DashboardViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,10 +19,6 @@ val retrofitModule = module {
     }
     factory { provideApiService(get()) }
     single { provideRetrofit(get()) }
-
-    viewModel {
-        DashboardViewModel(get())
-    }
 }
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
