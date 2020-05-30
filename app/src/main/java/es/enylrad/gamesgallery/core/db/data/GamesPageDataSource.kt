@@ -2,6 +2,7 @@ package es.enylrad.gamesgallery.core.db.data
 
 
 import androidx.paging.PageKeyedDataSource
+import es.enylrad.gamesgallery.core.constants.PAGE_SIZE
 import es.enylrad.gamesgallery.core.db.GamesDao
 import es.enylrad.gamesgallery.core.db.Result
 import es.enylrad.gamesgallery.core.model.GameEntity
@@ -24,21 +25,21 @@ class GamesPageDataSource(
         callback: LoadInitialCallback<Int, GameEntity>
     ) {
         fetchData(1, params.requestedLoadSize) {
-            callback.onResult(it, null, 2)
+            callback.onResult(it, null, PAGE_SIZE)
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, GameEntity>) {
         val page = params.key
         fetchData(page, params.requestedLoadSize) {
-            callback.onResult(it, page + 1)
+            callback.onResult(it, page + PAGE_SIZE)
         }
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, GameEntity>) {
         val page = params.key
         fetchData(page, params.requestedLoadSize) {
-            callback.onResult(it, page - 1)
+            callback.onResult(it, page - PAGE_SIZE)
         }
     }
 

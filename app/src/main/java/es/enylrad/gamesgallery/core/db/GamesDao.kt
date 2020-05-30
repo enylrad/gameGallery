@@ -17,10 +17,10 @@ interface GamesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(gameEntity: GameEntity)
 
-    @Query("SELECT * FROM games")
+    @Query("SELECT * FROM games ORDER BY popularity DESC")
     fun getGames(): LiveData<List<GameEntity>>
 
-    @Query("SELECT * FROM games")
+    @Query("SELECT * FROM games ORDER BY popularity DESC")
     fun getGamesPagedList(): DataSource.Factory<Int, GameEntity>
 
     @Query("SELECT * FROM games WHERE id == :id")

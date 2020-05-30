@@ -43,25 +43,28 @@ class DashboardFragment : BaseFragment() {
     private fun setRecyclerView() {
         viewModel.connectivityAvailable = ConnectivityUtil.isConnected(context)
 
-        binding.rvGames.adapter = adapter
         val initialColumnSize = GameTypeAdapter.GridGameAdapter().column
-        binding.rvGames.layoutManager = GridLayoutManager(context, initialColumnSize)
 
+        binding.rvGames.adapter = adapter
+        binding.rvGames.layoutManager = GridLayoutManager(context, initialColumnSize)
+        binding.rvGames.layoutAnimation = AnimationUtils.loadLayoutAnimation(
+            context,
+            R.anim.grid_layout_animation_from_bottom
+        )
+
+        viewModel.selected.observe(viewLifecycleOwner) {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        }
+        subscribeAdapter(adapter)
+    }
+
+    private fun subscribeAdapter(adapter: GameAdapter) {
         viewModel.gameAdapter.observe(viewLifecycleOwner) {
             binding.rvGames.layoutManager = GridLayoutManager(context, it.column)
             adapter.changeTypeAdapter(it)
         }
-
         viewModel.games.observe(viewLifecycleOwner) {
-            binding.rvGames.layoutAnimation = AnimationUtils.loadLayoutAnimation(
-                context,
-                R.anim.grid_layout_animation_from_bottom
-            )
             adapter.submitList(it)
-        }
-
-        viewModel.selected.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 }

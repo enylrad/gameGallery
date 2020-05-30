@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
+import es.enylrad.gamesgallery.core.constants.PAGE_SIZE
 import es.enylrad.gamesgallery.core.db.GamesDao
 import es.enylrad.gamesgallery.core.db.resultLiveData
 import es.enylrad.gamesgallery.core.model.GameEntity
@@ -54,8 +55,6 @@ class GamesRepository(
         saveCallResult = { gamesDao.insertAll(it) })
 
     companion object {
-
-        const val PAGE_SIZE = 100
 
         private var instance: GamesRepository? = null
 

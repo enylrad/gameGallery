@@ -13,12 +13,13 @@ import kotlinx.android.parcel.Parcelize
 @TypeConverters(CoverConverter::class)
 data class GameEntity(
     @PrimaryKey
-    val id: String = "",
+    val id: Int = 0,
     val name: String? = null,
     val summary: String? = null,
     @Embedded(prefix = "cover_")
     val cover: CoverEntity? = null,
     val created_at: Long? = null,
     val updated_at: Long? = null,
-    val screenshots: List<CoverEntity>? = null
+    val screenshots: List<CoverEntity>? = null,
+    val popularity: Double = 0.0
 ) : Parcelable
