@@ -3,7 +3,7 @@ package es.enylrad.gamesgallery.core.app
 import android.app.Application
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import es.enylrad.gamesgallery.BuildConfig
-import es.enylrad.gamesgallery.commons.di.*
+import es.enylrad.gamesgallery.core.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -30,11 +30,14 @@ class AppController : Application() {
             androidContext(this@AppController)
             modules(
                 listOf(
-                    userSessionModule,
+                    sessionModule,
                     preferencesModule,
                     firestoreModule,
                     retrofitModule,
-                    viewModelModule
+                    roomModule,
+                    repositoryModule,
+                    viewModelModule,
+                    appModule
                 )
             )
         }

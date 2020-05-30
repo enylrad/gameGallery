@@ -1,27 +1,23 @@
 package es.enylrad.gamesgallery.ui.dashboard
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.enylrad.gamesgallery.commons.model.GameEntity
-import es.enylrad.gamesgallery.commons.network.ApiService
-import es.enylrad.gamesgallery.commons.utils.callbackResponse
+import es.enylrad.gamesgallery.core.db.data.GamesRepository
+import es.enylrad.gamesgallery.core.model.GameEntity
 import es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 
-class DashboardViewModel(apiService: ApiService) : ViewModel() {
+class DashboardViewModel(
+    private val repository: GamesRepository,
+    private val ioCoroutineScope: CoroutineScope
+) :
+    ViewModel() {
 
-    private val _games = MutableLiveData<MutableList<GameEntity>>().apply {
-        apiService.getGames().enqueue(
-            callbackResponse(
-                success = {
-                    value = it
-                },
-                fail = {
-                    // TODO
-                },
-                TAG = "getGames"
-            )
-        )
+    var connectivityAvailable: Boolean = false
+
+    val games by lazy {
+        repository.observePagedGames(connectivityAvailable, ioCoroutineScope)
     }
 
     private fun getGameAt(index: Int): GameEntity? {
@@ -33,8 +29,6 @@ class DashboardViewModel(apiService: ApiService) : ViewModel() {
         }
     }
 
-    val games: LiveData<MutableList<GameEntity>> = _games
-
     private val _selected = MutableLiveData<GameEntity?>()
 
     val selected: MutableLiveData<GameEntity?> = _selected
@@ -44,26 +38,28 @@ class DashboardViewModel(apiService: ApiService) : ViewModel() {
         _selected.value = db
     }
 
-    private val _typeAdapter = MutableLiveData<GameTypeAdapter>()
-
-    init {
-        _typeAdapter.value = GameTypeAdapter.GridGameAdapter()
+    private val _gameAdapter = MutableLiveData<GameTypeAdapter>().apply {
+        GameTypeAdapter.GridGameAdapter()
     }
 
-    val typeAdapter: MutableLiveData<GameTypeAdapter> = _typeAdapter
+    val gameAdapter: MutableLiveData<GameTypeAdapter> = _gameAdapter
 
     fun changeViewList(type: Int) {
         when (type) {
             GameTypeAdapter.CardGameAdapter().type -> {
-                _typeAdapter.value = GameTypeAdapter.CardGameAdapter()
+                _gameAdapter.value = GameTypeAdapter.CardGameAdapter()
             }
             GameTypeAdapter.SimpleGameAdapter().type -> {
-                _typeAdapter.value = GameTypeAdapter.SimpleGameAdapter()
+                _gameAdapter.value = GameTypeAdapter.SimpleGameAdapter()
             }
             GameTypeAdapter.GridGameAdapter().type -> {
-                _typeAdapter.value = GameTypeAdapter.GridGameAdapter()
+                _gameAdapter.value = GameTypeAdapter.GridGameAdapter()
             }
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        ioCoroutineScope.cancel()
+    }
 }

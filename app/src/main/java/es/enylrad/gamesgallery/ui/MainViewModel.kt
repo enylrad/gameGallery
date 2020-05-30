@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import es.enylrad.gamesgallery.commons.model.UserEntity
-import es.enylrad.gamesgallery.commons.model.utils.update
-import es.enylrad.gamesgallery.commons.tag.USERS
+import es.enylrad.gamesgallery.core.constants.USERS
+import es.enylrad.gamesgallery.core.model.UserEntity
+import es.enylrad.gamesgallery.core.model.utils.update
 import timber.log.Timber
 
 class MainViewModel(

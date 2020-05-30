@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import es.enylrad.gamesgallery.commons.model.GameEntity
-import es.enylrad.gamesgallery.core.base.BaseAdapter
+import es.enylrad.gamesgallery.core.base.BasePagedAdapter
+import es.enylrad.gamesgallery.core.model.GameEntity
 import es.enylrad.gamesgallery.databinding.ItemGameBigBinding
 import es.enylrad.gamesgallery.databinding.ItemGameNormalBinding
 import es.enylrad.gamesgallery.databinding.ItemGameSimpleBinding
@@ -15,17 +15,7 @@ import es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter
 
 class GameAdapter(
     private val viewModel: DashboardViewModel
-) : BaseAdapter<GameEntity>(
-    diffCallback = object : DiffUtil.ItemCallback<GameEntity>() {
-        override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
-            return oldItem == newItem
-        }
-    }
-) {
+) : BasePagedAdapter<GameEntity>(GameDiffCallback()) {
 
     private var mTypeAdapter: GameTypeAdapter = GameTypeAdapter.GridGameAdapter()
 
@@ -72,5 +62,16 @@ class GameAdapter(
     fun changeTypeAdapter(typeAdapter: GameTypeAdapter) {
         mTypeAdapter = typeAdapter
         notifyDataSetChanged()
+    }
+}
+
+private class GameDiffCallback : DiffUtil.ItemCallback<GameEntity>() {
+
+    override fun areItemsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: GameEntity, newItem: GameEntity): Boolean {
+        return oldItem == newItem
     }
 }

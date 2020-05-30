@@ -63,7 +63,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(1)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_card_black_24"
-                app:hideCard="@{viewModel.typeAdapter.type}"
+                app:hideCard="@{viewModel.gameAdapter.type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_list_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -77,7 +77,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(2)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_list_black_24"
-                app:hideList="@{viewModel.typeAdapter.type}"
+                app:hideList="@{viewModel.gameAdapter.type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_grid_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +91,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(0)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_grid_black_24"
-                app:hideGrid="@{viewModel.typeAdapter.type}"
+                app:hideGrid="@{viewModel.gameAdapter.type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

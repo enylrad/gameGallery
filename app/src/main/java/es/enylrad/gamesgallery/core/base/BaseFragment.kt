@@ -8,11 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import es.enylrad.gamesgallery.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), CoroutineScope {
 
     protected abstract val viewModel: ViewModel
     protected abstract val binding: ViewBinding
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
+    private lateinit var job: Job
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        job = SupervisorJob()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,6 +35,11 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
     fun mainActivity(): MainActivity? {

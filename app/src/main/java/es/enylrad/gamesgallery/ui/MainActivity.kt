@@ -17,10 +17,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import es.enylrad.gamesgallery.R
-import es.enylrad.gamesgallery.commons.model.UserEntity
-import es.enylrad.gamesgallery.commons.model.utils.createUser
 import es.enylrad.gamesgallery.commons.utils.ActivityBindingProperty
 import es.enylrad.gamesgallery.core.base.BaseActivity
+import es.enylrad.gamesgallery.core.model.UserEntity
+import es.enylrad.gamesgallery.core.model.utils.createUser
 import es.enylrad.gamesgallery.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
