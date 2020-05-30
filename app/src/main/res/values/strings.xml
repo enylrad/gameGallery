@@ -13,4 +13,5 @@
 
     <!--Errors-->
     <string name="fail_auth">Authentication Failed.</string>
+    <string name="title_game_detail">Game Detail</string>
 </resources>

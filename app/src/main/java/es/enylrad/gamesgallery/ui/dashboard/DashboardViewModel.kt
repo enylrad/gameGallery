@@ -4,9 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.enylrad.gamesgallery.core.db.data.GamesRepository
 import es.enylrad.gamesgallery.core.model.GameEntity
-import es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter
+import es.enylrad.gamesgallery.core.sealed.AdapterGameType
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 
 class DashboardViewModel(
     private val repository: GamesRepository,
@@ -29,37 +28,24 @@ class DashboardViewModel(
         }
     }
 
-    private val _selected = MutableLiveData<GameEntity?>()
-
-    val selected: MutableLiveData<GameEntity?> = _selected
-
-    fun onItemClick(index: Int) {
-        val db: GameEntity? = getGameAt(index)
-        _selected.value = db
+    private val _gameAdapter = MutableLiveData<AdapterGameType>().apply {
+        AdapterGameType.GridGameAdapter()
     }
 
-    private val _gameAdapter = MutableLiveData<GameTypeAdapter>().apply {
-        GameTypeAdapter.GridGameAdapter()
-    }
-
-    val gameAdapter: MutableLiveData<GameTypeAdapter> = _gameAdapter
+    val gameAdapter: MutableLiveData<AdapterGameType> = _gameAdapter
 
     fun changeViewList(type: Int) {
         when (type) {
-            GameTypeAdapter.CardGameAdapter().type -> {
-                _gameAdapter.value = GameTypeAdapter.CardGameAdapter()
+            AdapterGameType.CardGameAdapter().type -> {
+                _gameAdapter.value = AdapterGameType.CardGameAdapter()
             }
-            GameTypeAdapter.SimpleGameAdapter().type -> {
-                _gameAdapter.value = GameTypeAdapter.SimpleGameAdapter()
+            AdapterGameType.SimpleGameAdapter().type -> {
+                _gameAdapter.value = AdapterGameType.SimpleGameAdapter()
             }
-            GameTypeAdapter.GridGameAdapter().type -> {
-                _gameAdapter.value = GameTypeAdapter.GridGameAdapter()
+            AdapterGameType.GridGameAdapter().type -> {
+                _gameAdapter.value = AdapterGameType.GridGameAdapter()
             }
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        ioCoroutineScope.cancel()
-    }
 }

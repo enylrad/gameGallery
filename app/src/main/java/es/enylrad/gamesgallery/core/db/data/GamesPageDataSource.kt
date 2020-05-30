@@ -24,7 +24,7 @@ class GamesPageDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, GameEntity>
     ) {
-        fetchData(1, params.requestedLoadSize) {
+        fetchData(0, params.requestedLoadSize) {
             callback.onResult(it, null, PAGE_SIZE)
         }
     }

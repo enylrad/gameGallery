@@ -1,7 +1,6 @@
 package es.enylrad.gamesgallery.ui.profile
 
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +24,6 @@ class ProfileFragment : BaseFragment() {
         return super.onCreateView(inflater, container, savedInstanceState).apply {
             binding.lifecycleOwner = this@ProfileFragment
             binding.viewModel = viewModel
-
-            sharedElementEnterTransition =
-                TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
             binding.lottieComingSoon.setOnClickListener {
                 binding.lottieComingSoon.playAnimation()

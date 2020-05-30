@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="position"
-            type="java.lang.Integer" />
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
 
         <variable
-            name="viewModel"
-            type="es.enylrad.gamesgallery.ui.dashboard.DashboardViewModel" />
+            name="game"
+            type="es.enylrad.gamesgallery.core.model.GameEntity" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:onClick="@{() -> viewModel.onItemClick(position)}"
+        android:onClick="@{clickListener}"
         android:stateListAnimator="@animator/selector_item_game"
         app:cardCornerRadius="15dp"
         app:cardElevation="@dimen/adapter_elevation_game_unselected"
@@ -31,12 +31,13 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/iv_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:contentDescription="@string/cover_game_accessibility"
                 android:scaleType="centerCrop"
-                app:gameCover="@{viewModel.games.get(position).cover}"
-                app:gameScreens="@{viewModel.games.get(position).screenshots}"
+                app:gameCover="@{game.cover}"
+                app:gameScreens="@{game.screenshots}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +57,11 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@{viewModel.games.get(position).name}"
+                android:text="@{game.name}"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

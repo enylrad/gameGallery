@@ -92,7 +92,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun launchProfile() {
-        navController.navigate(R.id.profile_fragment)
+        navController.navigate(R.id.navigation_profile)
     }
 
     private fun configGoogleSignInClient() {
@@ -173,13 +173,27 @@ class MainActivity : BaseActivity() {
     private fun setListenerChangeFragment() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.profile_fragment -> {
+                R.id.navigation_game_detail,
+                R.id.navigation_profile -> {
                     visibilityToolbar(View.GONE)
                     visibilityNavigationBar(View.GONE)
+                    visibilityBoxSearch(View.GONE)
+                }
+                R.id.navigation_dashboard -> {
+                    visibilityToolbar(View.VISIBLE)
+                    visibilityNavigationBar(View.VISIBLE)
+                    visibilityBoxSearch(View.VISIBLE)
+
+                }
+                R.id.navigation_library -> {
+                    visibilityToolbar(View.VISIBLE)
+                    visibilityNavigationBar(View.VISIBLE)
+                    visibilityBoxSearch(View.GONE)
                 }
                 else -> {
                     visibilityToolbar(View.VISIBLE)
                     visibilityNavigationBar(View.VISIBLE)
+                    visibilityBoxSearch(View.GONE)
                 }
             }
         }
@@ -191,6 +205,10 @@ class MainActivity : BaseActivity() {
 
     private fun visibilityNavigationBar(visibility: Int) {
         binding.navView.visibility = visibility
+    }
+
+    private fun visibilityBoxSearch(visibility: Int) {
+        binding.toolbar.svSearchGames.visibility = visibility
     }
 
     private fun getDynamicLink(intent: Intent) {

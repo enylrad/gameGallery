@@ -4,6 +4,7 @@
     <string name="title_library">Galería</string>
     <string name="title_dashboard">Explorar</string>
     <string name="title_profile">Perfil</string>
+    <string name="title_game_detail">Detalle del juego</string>
 
     <!--Errors-->
     <string name="fail_auth">Ha ocurrido algún error al autencicarse.</string>

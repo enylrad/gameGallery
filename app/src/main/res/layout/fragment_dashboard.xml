@@ -5,9 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="type"
-            type="es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter" />
+            type="es.enylrad.gamesgallery.core.sealed.AdapterGameType" />
 
         <variable
             name="viewModel"
@@ -17,10 +19,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         tools:context=".ui.dashboard.DashboardFragment">
 
-        <es.enylrad.gamesgallery.commons.view.GridRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_games"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -63,7 +64,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(1)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_card_black_24"
-                app:hideCard="@{viewModel.gameAdapter.type}"
+                android:visibility="@{viewModel.gameAdapter.type == 1 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_list_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -77,7 +78,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(2)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_list_black_24"
-                app:hideList="@{viewModel.gameAdapter.type}"
+                android:visibility="@{viewModel.gameAdapter.type == 2 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_grid_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +92,7 @@
                 android:onClick="@{() -> viewModel.changeViewList(0)}"
                 android:padding="5dp"
                 android:src="@drawable/ic_grid_black_24"
-                app:hideGrid="@{viewModel.gameAdapter.type}"
+                android:visibility="@{viewModel.gameAdapter.type == 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

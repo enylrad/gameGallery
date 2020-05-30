@@ -15,12 +15,25 @@
         android:id="@+id/navigation_dashboard"
         android:name="es.enylrad.gamesgallery.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_game_detail"
+            app:destination="@id/navigation_game_detail" />
+    </fragment>
 
     <fragment
-        android:id="@+id/profile_fragment"
+        android:id="@+id/navigation_profile"
         android:name="es.enylrad.gamesgallery.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_game_detail"
+        android:name="es.enylrad.gamesgallery.ui.game.GameDetailFragment"
+        android:label="@string/title_game_detail"
+        tools:layout="@layout/fragment_game_detail">
+        <argument
+            android:name="game"
+            app:argType="es.enylrad.gamesgallery.core.model.GameEntity" />
+    </fragment>
 
 </navigation>

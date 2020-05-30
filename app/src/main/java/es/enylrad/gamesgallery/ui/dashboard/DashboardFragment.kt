@@ -4,17 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.utils.ConnectivityUtil
 import es.enylrad.gamesgallery.commons.utils.FragmentBinding
 import es.enylrad.gamesgallery.core.base.BaseFragment
+import es.enylrad.gamesgallery.core.sealed.AdapterGameType
 import es.enylrad.gamesgallery.databinding.FragmentDashboardBinding
 import es.enylrad.gamesgallery.ui.dashboard.adapter.GameAdapter
-import es.enylrad.gamesgallery.ui.dashboard.adapter.sealed.GameTypeAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : BaseFragment() {
@@ -24,7 +22,7 @@ class DashboardFragment : BaseFragment() {
     override val binding by FragmentBinding<FragmentDashboardBinding>(R.layout.fragment_dashboard)
 
     private val adapter: GameAdapter by lazy {
-        GameAdapter(viewModel)
+        GameAdapter()
     }
 
     override fun onCreateView(
@@ -36,35 +34,32 @@ class DashboardFragment : BaseFragment() {
             binding.lifecycleOwner = this@DashboardFragment
             binding.viewModel = viewModel
 
+            setConnectivity()
             setRecyclerView()
         }
     }
 
-    private fun setRecyclerView() {
+    private fun setConnectivity() {
         viewModel.connectivityAvailable = ConnectivityUtil.isConnected(context)
-
-        val initialColumnSize = GameTypeAdapter.GridGameAdapter().column
-
-        binding.rvGames.adapter = adapter
-        binding.rvGames.layoutManager = GridLayoutManager(context, initialColumnSize)
-        binding.rvGames.layoutAnimation = AnimationUtils.loadLayoutAnimation(
-            context,
-            R.anim.grid_layout_animation_from_bottom
-        )
-
-        viewModel.selected.observe(viewLifecycleOwner) {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-        }
-        subscribeAdapter(adapter)
     }
 
-    private fun subscribeAdapter(adapter: GameAdapter) {
-        viewModel.gameAdapter.observe(viewLifecycleOwner) {
-            binding.rvGames.layoutManager = GridLayoutManager(context, it.column)
-            adapter.changeTypeAdapter(it)
+    private fun setRecyclerView() {
+
+        val sizeColumn = AdapterGameType.GridGameAdapter().column
+        binding.rvGames.layoutManager = GridLayoutManager(context, sizeColumn)
+        binding.rvGames.adapter = adapter
+        postponeEnterTransition()
+        binding.rvGames.viewTreeObserver.addOnDrawListener {
+            startPostponedEnterTransition()
         }
-        viewModel.games.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+
+        viewModel.gameAdapter.observe(viewLifecycleOwner) { type ->
+            binding.rvGames.layoutManager = GridLayoutManager(context, type.column)
+            adapter.changeTypeAdapter(type)
+        }
+
+        viewModel.games.observe(viewLifecycleOwner) { games ->
+            adapter.submitList(games)
         }
     }
 }
