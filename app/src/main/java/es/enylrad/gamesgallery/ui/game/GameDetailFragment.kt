@@ -39,14 +39,18 @@ class GameDetailFragment : BaseFragment() {
             viewModel.game = args.game
             binding.viewModel = viewModel
 
-            val imageTransition = "${getString(R.string.transition_img_game)}_${viewModel.game.id}"
-            val nameTransition = "${getString(R.string.transition_name_game)}_${viewModel.game.id}"
-
-            binding.ivCover.transitionName = imageTransition
-            binding.tvName.transitionName = nameTransition
-
-            ViewCompat.setTransitionName(binding.ivCover, imageTransition)
-            ViewCompat.setTransitionName(binding.tvName, nameTransition)
+            configTransitions()
         }
+    }
+
+    private fun configTransitions() {
+        val imageTransition = "${getString(R.string.transition_img_game)}_${viewModel.game.id}"
+        val nameTransition = "${getString(R.string.transition_name_game)}_${viewModel.game.id}"
+
+        binding.ivCover.transitionName = imageTransition
+        binding.tvName.transitionName = nameTransition
+
+        ViewCompat.setTransitionName(binding.ivCover, imageTransition)
+        ViewCompat.setTransitionName(binding.tvName, nameTransition)
     }
 }

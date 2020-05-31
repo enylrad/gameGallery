@@ -25,7 +25,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/sv_search_games"
+                android:id="@+id/sv_search_bar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

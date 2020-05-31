@@ -6,6 +6,9 @@
     <string name="title_profile">Perfil</string>
     <string name="title_game_detail">Detalle del juego</string>
 
+    <!--Commons-->
+    <string name="log_out">Cerrar sesión</string>
+
     <!--Errors-->
     <string name="fail_auth">Ha ocurrido algún error al autencicarse.</string>
 </resources>

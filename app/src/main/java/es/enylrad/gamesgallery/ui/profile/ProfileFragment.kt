@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.utils.FragmentBinding
 import es.enylrad.gamesgallery.core.base.BaseFragment
 import es.enylrad.gamesgallery.databinding.FragmentProfileBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class ProfileFragment : BaseFragment() {
 
@@ -25,9 +27,15 @@ class ProfileFragment : BaseFragment() {
             binding.lifecycleOwner = this@ProfileFragment
             binding.viewModel = viewModel
 
-            binding.lottieComingSoon.setOnClickListener {
-                binding.lottieComingSoon.playAnimation()
-            }
+            setListeners()
+        }
+    }
+
+
+    private fun setListeners() {
+        binding.btnLogOut.setOnClickListener {
+            mainActivity()?.signOut()
+            findNavController().popBackStack()
         }
     }
 }

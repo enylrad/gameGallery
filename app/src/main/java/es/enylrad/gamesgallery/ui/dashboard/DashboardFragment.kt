@@ -48,6 +48,7 @@ class DashboardFragment : BaseFragment() {
         val sizeColumn = AdapterGameType.GridGameAdapter().column
         binding.rvGames.layoutManager = GridLayoutManager(context, sizeColumn)
         binding.rvGames.adapter = adapter
+
         postponeEnterTransition()
         binding.rvGames.viewTreeObserver.addOnDrawListener {
             startPostponedEnterTransition()

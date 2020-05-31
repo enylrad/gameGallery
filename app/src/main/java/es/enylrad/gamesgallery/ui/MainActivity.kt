@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -12,12 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import es.enylrad.gamesgallery.R
 import es.enylrad.gamesgallery.commons.utils.ActivityBindingProperty
+import es.enylrad.gamesgallery.commons.utils.snack
 import es.enylrad.gamesgallery.core.base.BaseActivity
 import es.enylrad.gamesgallery.core.model.UserEntity
 import es.enylrad.gamesgallery.core.model.utils.createUser
@@ -95,6 +96,64 @@ class MainActivity : BaseActivity() {
         navController.navigate(R.id.navigation_profile)
     }
 
+    private fun setListenerChangeFragment() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            configVisibilityMain(destination)
+        }
+    }
+
+    private fun configVisibilityMain(destination: NavDestination) {
+        val toolBarVisibility: Int
+        val navViewVisibility: Int
+        val searchBarVisibility: Int
+
+        when (destination.id) {
+            R.id.navigation_game_detail,
+            R.id.navigation_profile -> {
+                searchBarVisibility = View.GONE
+                toolBarVisibility = View.GONE
+                navViewVisibility = View.GONE
+            }
+            R.id.navigation_dashboard -> {
+                searchBarVisibility = View.VISIBLE
+                toolBarVisibility = View.VISIBLE
+                navViewVisibility = View.VISIBLE
+
+            }
+            R.id.navigation_library -> {
+                searchBarVisibility = View.GONE
+                toolBarVisibility = View.VISIBLE
+                navViewVisibility = View.VISIBLE
+            }
+            else -> {
+                searchBarVisibility = View.GONE
+                toolBarVisibility = View.VISIBLE
+                navViewVisibility = View.VISIBLE
+            }
+        }
+
+        binding.toolbar.svSearchBar.visibility = searchBarVisibility
+        binding.toolbar.toolbarApp.visibility = toolBarVisibility
+        binding.navView.visibility = navViewVisibility
+    }
+
+    private fun getDynamicLink(intent: Intent) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener { pendingDynamicLinkData ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+                // TODO
+                Timber.d(deepLink.toString())
+            }
+            .addOnFailureListener { exception ->
+                Timber.e("getDynamicLink: OnFailure $exception")
+            }
+    }
+
+
     private fun configGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -130,7 +189,7 @@ class MainActivity : BaseActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
-            snackBar(getString(R.string.fail_auth))
+            binding.container.snack(getString(R.string.fail_auth))
             Timber.w("signInResult:failed code=${e.statusCode}")
             updateUI(null)
         }
@@ -151,79 +210,18 @@ class MainActivity : BaseActivity() {
                     updateUI(account)
 
                 } else {
-                    snackBar(getString(R.string.fail_auth))
+                    binding.container.snack(getString(R.string.fail_auth))
                     Timber.w("signInWithCredential: failure ${task.exception}")
                     updateUI(null)
                 }
             } ?: updateUI(null)
     }
 
-    private fun snackBar(text: String) {
-        Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun signOut() {
+    fun signOut() {
         FirebaseAuth.getInstance().signOut()
         mGoogleSignInClient?.signOut()
             ?.addOnCompleteListener(this) {
                 updateUI(null)
-            }
-    }
-
-    private fun setListenerChangeFragment() {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.navigation_game_detail,
-                R.id.navigation_profile -> {
-                    visibilityToolbar(View.GONE)
-                    visibilityNavigationBar(View.GONE)
-                    visibilityBoxSearch(View.GONE)
-                }
-                R.id.navigation_dashboard -> {
-                    visibilityToolbar(View.VISIBLE)
-                    visibilityNavigationBar(View.VISIBLE)
-                    visibilityBoxSearch(View.VISIBLE)
-
-                }
-                R.id.navigation_library -> {
-                    visibilityToolbar(View.VISIBLE)
-                    visibilityNavigationBar(View.VISIBLE)
-                    visibilityBoxSearch(View.GONE)
-                }
-                else -> {
-                    visibilityToolbar(View.VISIBLE)
-                    visibilityNavigationBar(View.VISIBLE)
-                    visibilityBoxSearch(View.GONE)
-                }
-            }
-        }
-    }
-
-    private fun visibilityToolbar(visibility: Int) {
-        binding.toolbar.toolbarApp.visibility = visibility
-    }
-
-    private fun visibilityNavigationBar(visibility: Int) {
-        binding.navView.visibility = visibility
-    }
-
-    private fun visibilityBoxSearch(visibility: Int) {
-        binding.toolbar.svSearchGames.visibility = visibility
-    }
-
-    private fun getDynamicLink(intent: Intent) {
-        FirebaseDynamicLinks.getInstance()
-            .getDynamicLink(intent)
-            .addOnSuccessListener { pendingDynamicLinkData ->
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                }
-                // TODO
-                Timber.d(deepLink.toString())
-            }
-            .addOnFailureListener { exception ->
-                Timber.e("getDynamicLink: OnFailure $exception")
             }
     }
 

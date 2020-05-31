@@ -11,6 +11,9 @@
     <string name="title_dashboard">Explore</string>
     <string name="title_profile">Profile</string>
 
+    <!--Commons-->
+    <string name="log_out">Log out</string>
+
     <!--Errors-->
     <string name="fail_auth">Authentication Failed.</string>
     <string name="title_game_detail">Game Detail</string>
