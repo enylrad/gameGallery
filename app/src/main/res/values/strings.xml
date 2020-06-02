@@ -10,11 +10,30 @@
     <string name="title_library">Library</string>
     <string name="title_dashboard">Explore</string>
     <string name="title_profile">Profile</string>
+    <string name="title_game_detail">Game Detail</string>
 
     <!--Commons-->
     <string name="log_out">Log out</string>
 
+    <!--Status Games-->
+    <string name="status_released">Released</string>
+    <string name="status_alpha">Alpha</string>
+    <string name="status_beta">Beta</string>
+    <string name="status_early_access">Early Access</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_rumored">Rumored</string>
+    <string name="unknown">Unknown</string>
+
+    <!--Categories Game-->
+    <string name="category_main_game">Main Game</string>
+    <string name="category_dlc_addon">DLC</string>
+    <string name="category_expansion">Expansion</string>
+    <string name="category_bundle">Bundle</string>
+    <string name="category_standalone_expansion">Standalone Expansion</string>
+    <string name="category_mod">Mod</string>
+    <string name="category_episode">Episode</string>
+
     <!--Errors-->
     <string name="fail_auth">Authentication Failed.</string>
-    <string name="title_game_detail">Game Detail</string>
 </resources>

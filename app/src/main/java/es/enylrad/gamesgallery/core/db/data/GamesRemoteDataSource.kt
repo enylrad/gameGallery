@@ -12,7 +12,7 @@ class GamesRemoteDataSource(private val service: IGDBService) : BaseDataSource()
 
     suspend fun fetchGames(page: Int, pageSize: Int? = null): Result<List<GameEntity>> {
         val filter =
-            "fields id, name, summary, cover.image_id, created_at, updated_at, screenshots.*, popularity; sort popularity desc; limit $pageSize; offset $page;"
+            "fields id, name, summary, cover.image_id, created_at, updated_at, screenshots.*, popularity, aggregated_rating, first_release_date, total_rating, storyline, status, category; sort popularity desc; limit $pageSize; offset $page;"
         return getResult { service.getGames(filter) }
     }
 

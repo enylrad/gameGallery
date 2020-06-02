@@ -6,6 +6,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import es.enylrad.gamesgallery.core.db.converters.CoverConverter
+import es.enylrad.gamesgallery.core.sealed.CategoryGame
+import es.enylrad.gamesgallery.core.sealed.StatusGame
 import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "games")
@@ -21,5 +23,12 @@ data class GameEntity(
     val created_at: Long? = null,
     val updated_at: Long? = null,
     val screenshots: List<CoverEntity>? = null,
-    val popularity: Double = 0.0
+    val popularity: Double = 0.0,
+    val aggregated_rating: Double = 0.0,
+    val first_release_date: Long = 0,
+    val total_rating: Double = 0.0,
+    val storyline: String? = null,
+    val status: Int = StatusGame.Unknown().code,
+    val category: Int = CategoryGame.Unknown().code
+
 ) : Parcelable

@@ -8,16 +8,21 @@ import es.enylrad.gamesgallery.core.model.CoverEntity
 import es.enylrad.gamesgallery.core.sealed.CoverSize
 
 
-@BindingAdapter("gameCover", "gameScreens")
-fun ImageView.loadImageGame(cover: CoverEntity?, screenShots: List<CoverEntity>?) {
+@BindingAdapter("gameCover", "gameScreens", "gameCoverSize", "gameCoverByTwo")
+fun ImageView.loadImageGame(
+    cover: CoverEntity?,
+    screenShots: List<CoverEntity>?,
+    size: CoverSize,
+    coverByTwo: Boolean
+) {
 
     if (cover?.image_id != null) {
-        setImageIGDB(cover.image_id)
+        setImageIGDB(cover.image_id, size, coverByTwo)
         return
     } else if (screenShots != null && screenShots.isNotEmpty()) {
         for (image in screenShots) {
             if (!image.image_id.isNullOrBlank()) {
-                setImageIGDB(image.image_id)
+                setImageIGDB(image.image_id, size, coverByTwo)
                 return
             }
         }
@@ -27,9 +32,16 @@ fun ImageView.loadImageGame(cover: CoverEntity?, screenShots: List<CoverEntity>?
 
 }
 
-private fun ImageView.setImageIGDB(imageId: String) {
-    val size = CoverSize.CoverBig().id
-    val url = "https://images.igdb.com/igdb/image/upload/t_$size/${imageId}.jpg"
+private fun ImageView.setImageIGDB(
+    imageId: String,
+    size: CoverSize,
+    coverByTwo: Boolean
+) {
+    val url = if (coverByTwo) {
+        "https://images.igdb.com/igdb/image/upload/t_${size.name}/${imageId}.jpg"
+    } else {
+        "https://images.igdb.com/igdb/image/upload/t_${size.name}_2x/${imageId}.jpg"
+    }
 
     Glide.with(context)
         .load(url)

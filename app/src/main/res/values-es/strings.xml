@@ -1,6 +1,6 @@
 <resources>
 
-    <!--Navigation-->
+    <!--Fragments Title-->
     <string name="title_library">Galería</string>
     <string name="title_dashboard">Explorar</string>
     <string name="title_profile">Perfil</string>
@@ -8,6 +8,26 @@
 
     <!--Commons-->
     <string name="log_out">Cerrar sesión</string>
+    <string name="unknown">Desconocido</string>
+
+    <!--Status Games-->
+    <string name="status_released">Liberado</string>
+    <string name="status_alpha">Alpha</string>
+    <string name="status_beta">Beta</string>
+    <string name="status_early_access">Acceso anticipado</string>
+    <string name="status_offline">Desconectado</string>
+    <string name="status_cancelled">Cancelado</string>
+    <string name="status_rumored">Rumoreado</string>
+
+    <!--Categories Game-->
+    <string name="category_main_game">Juego Principal</string>
+    <string name="category_dlc_addon">DLC</string>
+    <string name="category_expansion">Expansión</string>
+    <string name="category_bundle">Bundle</string>
+    <string name="category_standalone_expansion">Expansión Independiente</string>
+    <string name="category_mod">Mod</string>
+    <string name="category_episode">Episodio</string>
+
 
     <!--Errors-->
     <string name="fail_auth">Ha ocurrido algún error al autencicarse.</string>

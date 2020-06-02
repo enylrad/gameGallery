@@ -17,12 +17,33 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : BaseFragment() {
 
+    companion object {
+        const val STATE_RV_GAMES = "state_rv_games"
+    }
+
     override val viewModel by viewModel<DashboardViewModel>()
 
     override val binding by FragmentBinding<FragmentDashboardBinding>(R.layout.fragment_dashboard)
 
     private val adapter: GameAdapter by lazy {
         GameAdapter()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(STATE_RV_GAMES, binding.rvGames.layoutManager?.onSaveInstanceState())
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            binding.rvGames.layoutManager?.onRestoreInstanceState(
+                savedInstanceState.getParcelable(
+                    STATE_RV_GAMES
+                )
+            )
+        }
     }
 
     override fun onCreateView(
@@ -55,12 +76,25 @@ class DashboardFragment : BaseFragment() {
         }
 
         viewModel.gameAdapter.observe(viewLifecycleOwner) { type ->
-            binding.rvGames.layoutManager = GridLayoutManager(context, type.column)
-            adapter.changeTypeAdapter(type)
+            updateAdapter(type)
         }
 
         viewModel.games.observe(viewLifecycleOwner) { games ->
             adapter.submitList(games)
         }
+    }
+
+    private fun updateAdapter(type: AdapterGameType) {
+        var scrollPosition = 0
+        // If a layout manager has already been set, get current scroll position.
+        if (binding.rvGames.layoutManager != null) {
+            scrollPosition = (binding.rvGames.layoutManager as GridLayoutManager)
+                .findFirstCompletelyVisibleItemPosition()
+        }
+        binding.rvGames.layoutManager = GridLayoutManager(context, type.column)
+
+        adapter.changeTypeAdapter(type)
+
+        binding.rvGames.scrollToPosition(scrollPosition)
     }
 }
