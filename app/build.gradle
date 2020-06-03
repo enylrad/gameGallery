@@ -9,6 +9,9 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply plugin: "org.sonarqube"
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion "29.0.3"
@@ -154,4 +157,40 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testRulesVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
 
+}
+
+sonarqube {
+    properties {
+        def props = new Properties()
+        def propFile = file('sonar-credentials.properties')
+        if (propFile.canRead()) {
+            props.load(new FileInputStream(propFile))
+
+            def keyUser = 'SONAR-USER'
+            def keyPassword = 'SONAR-PASSWORD'
+
+            if (props != null
+                    && props.containsKey(keyUser)
+                    && props.containsKey(keyPassword)) {
+
+                def user = props[keyUser]
+                def password = props[keyPassword]
+
+                property "sonar.projectName", "GameGallery"
+                property "sonar.projectKey", "es.enylrad.gamesgallery"
+                property "sonar.host.url", "http://localhost:9000"
+                property "sonar.login", "$user"
+                property "sonar.password", "$password"
+                property "sonar.tests", ["src/test/java"]
+                property "sonar.test.inclusions", "**/*Test*/**"
+                property "sonar.sourceEncoding", "UTF-8"
+                property "sonar.sources", "src/main/java"
+                property "sonar.exclusions", '**/*Test*/**,' +
+                        '*.json,' +
+                        '**/*test*/**,' +
+                        '**/.gradle/**,' +
+                        '**/R.class'
+            }
+        }
+    }
 }

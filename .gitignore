@@ -314,6 +314,8 @@ obj/
 !/gradle/wrapper/gradle-wrapper.jar
 
 ## Api Credentials ##
-
 api-credentials.properties
+
+## Sonar Credentials ##
+sonar-credentials.properties
 

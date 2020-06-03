@@ -48,6 +48,9 @@ buildscript {
         aptVersion = "1.8"
         gServicesVersion = "4.3.3"
 
+        // Sonar
+        sonarVersion = "2.7.1"
+
         // Testing
         junitVersion = "4.12"
         testRulesVersion = "1.1.1"
@@ -76,6 +79,9 @@ buildscript {
 
         // Performance Monitoring plugin
         classpath "com.google.firebase:perf-plugin:$fbPerfPluginVersion"
+
+        // Sonar
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
