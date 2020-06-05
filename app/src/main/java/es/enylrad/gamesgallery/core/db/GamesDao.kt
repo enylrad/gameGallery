@@ -24,6 +24,6 @@ interface GamesDao {
     fun getGamesPagedList(): DataSource.Factory<Int, GameEntity>
 
     @Query("SELECT * FROM games WHERE id == :id")
-    fun getGame(id: String): LiveData<GameEntity>
+    fun getGame(id: Int): LiveData<GameEntity>
 
 }

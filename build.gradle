@@ -8,53 +8,65 @@ buildscript {
         minSdkVersion = 21
         targetSdkVersion = 29
 
-        kotlinVersion = "1.3.72"
+        kotlinVersion = '1.3.72'
 
         // App dependencies
-        appCompatVersion = "1.1.0"
-        constraintLayoutVersion = "1.1.3"
-        coroutinesVersion = "1.3.3"
-        glideVersion = "4.11.0"
-        navigationVersion = "2.2.2"
-        navigationArgsVersion = "1.0.0"
-        ktxVersion = "1.3.0"
-        materialVersion = "1.1.0"
-        roomVersion = "2.2.5"
-        roomViewerVersion = "1.0.6"
-        workVersion = "2.3.4"
-        pagingVersion = "2.1.2"
-        lifeCycleVersion = "2.2.0"
-        koinVersion = "2.0.1"
-        retrofitVersion = "2.6.0"
-        retrofitScalarsVersion = "2.1.0"
-        okhttpVersion = "3.14.1"
-        fbAnalyticsVersion = "17.4.2"
-        fbCrashlyticsVersion = "17.0.0"
-        fbCrashlyticsGradleVersion = "2.1.1"
-        fbFirestoreVersion = "21.4.3"
-        fbAuthVersion = "19.3.1"
-        fbDynamicLinkVersion = "19.1.0"
-        fbPerfVersion = "19.0.7"
-        fbPerfPluginVersion = "1.3.1"
-        psAuthVersion = "18.0.0"
-        psPerfVersion = "1.3.1"
-        lottieVersion = "3.3.0"
-        chuckVersion = "1.1.0"
-        timberVersion = "4.7.1"
-        circleImgVersion = "3.1.0"
-        gradleVersion = "4.0.0"
-        safeArgsVersion = "1.0.0"
-        fbPluginsVersion = "2.0.0"
-        aptVersion = "1.8"
-        gServicesVersion = "4.3.3"
+        appCompatVersion = '1.1.0'
+        recyclerViewVersion = '1.1.0'
+        constraintLayoutVersion = '1.1.3'
+        coroutinesVersion = '1.3.3'
+        glideVersion = '4.11.0'
+        navigationVersion = '2.2.2'
+        navigationArgsVersion = '1.0.0'
+        ktxVersion = '1.3.0'
+        materialVersion = '1.1.0'
+        roomVersion = '2.2.5'
+        roomViewerVersion = '1.0.6'
+        workVersion = '2.3.4'
+        pagingVersion = '2.1.2'
+        lifeCycleVersion = '2.2.0'
+        koinVersion = '2.0.1'
+        retrofitVersion = '2.6.0'
+        retrofitScalarsVersion = '2.1.0'
+        okhttpVersion = '3.14.1'
+        fbAnalyticsVersion = '17.4.2'
+        fbCrashlyticsVersion = '17.0.0'
+        fbCrashlyticsGradleVersion = '2.1.1'
+        fbFirestoreVersion = '21.4.3'
+        fbAuthVersion = '19.3.1'
+        fbDynamicLinkVersion = '19.1.0'
+        fbPerfVersion = '19.0.7'
+        fbPerfPluginVersion = '1.3.1'
+        psAuthVersion = '18.0.0'
+        psPerfVersion = '1.3.1'
+        lottieVersion = '3.3.0'
+        chuckVersion = '1.1.0'
+        timberVersion = '4.7.1'
+        circleImgVersion = '3.1.0'
+        gradleVersion = '4.0.0'
+        safeArgsVersion = '1.0.0'
+        fbPluginsVersion = '2.0.0'
+        aptVersion = '1.8'
+        gServicesVersion = '4.3.3'
 
         // Sonar
-        sonarVersion = "2.7.1"
+        sonarVersion = '2.7.1'
 
         // Testing
-        junitVersion = "4.12"
-        testRulesVersion = "1.1.1"
-        expressoVersion = "3.2.0"
+        junitVersion = '4.12'
+        espressoVersion = '3.2.0'
+        coreTestingVersion = '2.1.0'
+        jacocoVersion = '0.8.4'
+        runnerVersion = '1.0.1'
+        uiAutomatorVersion = '2.2.0'
+        mockitoVersion = '2.25.0'
+        mockitoAllVersion = '1.10.19'
+        mockitoAndroidVersion = '2.25.0'
+        mockwebserverVersion = '3.8.1'
+        testExtJunit = '1.1.1'
+        testCoreVersion = '1.1.0'
+        testRunnerVersion = '1.1.1'
+        testRulesVersion = '1.2.0'
 
     }
 
@@ -66,25 +78,22 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
+        classpath "com.neenbedankt.gradle.plugins:android-apt:$aptVersion"
 
+        // Arch
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigationArgsVersion"
 
-        classpath "com.neenbedankt.gradle.plugins:android-apt:$aptVersion"
+        // Firebase
         classpath "com.google.firebase:firebase-plugins:$fbPluginsVersion"
-
-        classpath "com.google.gms:google-services:$gServicesVersion"
-
-        // Add the Crashlytics Gradle plugin.
         classpath "com.google.firebase:firebase-crashlytics-gradle:$fbCrashlyticsGradleVersion"
-
-        // Performance Monitoring plugin
         classpath "com.google.firebase:perf-plugin:$fbPerfPluginVersion"
+
+        // Google Services
+        classpath "com.google.gms:google-services:$gServicesVersion"
 
         // Sonar
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarVersion"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

@@ -8,11 +8,13 @@ import es.enylrad.gamesgallery.core.constants.PAGE_SIZE
 import es.enylrad.gamesgallery.core.db.GamesDao
 import es.enylrad.gamesgallery.core.db.resultLiveData
 import es.enylrad.gamesgallery.core.model.GameEntity
+import es.enylrad.gamesgallery.testing.OpenForTesting
 import kotlinx.coroutines.CoroutineScope
 
 /**
  * Repository module for handling data operations.
  */
+@OpenForTesting
 class GamesRepository(
     private val gamesDao: GamesDao,
     private val gamesRemoteDataSource: GamesRemoteDataSource
@@ -43,7 +45,7 @@ class GamesRepository(
         ).toLiveData(config = GamesPageDataSourceFactory.pagedListConfig())
     }
 
-    fun observeGame(id: String) = resultLiveData(
+    fun observeGame(id: Int) = resultLiveData(
         databaseQuery = { gamesDao.getGame(id) },
         networkCall = { gamesRemoteDataSource.fetchGame(id) },
         saveCallResult = { gamesDao.insert(it) })

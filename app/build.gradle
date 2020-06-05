@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.firebase.crashlytics'
@@ -12,6 +14,12 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: "org.sonarqube"
 
+allOpen {
+    // allows mocking for classes w/o directly opening them for release builds
+    annotation 'es.enylrad.gamesgallery.testing.OpenClass'
+}
+
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion "29.0.3"
@@ -20,10 +28,11 @@ android {
         applicationId "es.enylrad.gamesgallery"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
+        testInstrumentationRunner "es.enylrad.gamesgallery.commons.utils.AppTestRunner"
         versionCode 1
         versionName "1.0.0"
+        vectorDrawables.useSupportLibrary true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         def props = new Properties()
         def propFile = file('api-credentials.properties')
@@ -45,7 +54,7 @@ android {
             shrinkResources false
             debuggable true
 
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
         }
 
         release {
@@ -70,9 +79,12 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
 
+jacoco {
+    toolVersion = "$rootProject.jacocoVersion"
+}
+
+dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
@@ -80,6 +92,7 @@ dependencies {
     // Android
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
 
@@ -154,8 +167,28 @@ dependencies {
 
     // Test
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.testRulesVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockwebserverVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+
+    androidTestImplementation "androidx.test:core:$rootProject.testCoreVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.testRulesVersion"
+
+    androidTestImplementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    androidTestImplementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    androidTestImplementation "com.google.android.material:material:$rootProject.materialVersion"
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:$rootProject.espressoVersion"){}
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$rootProject.uiAutomatorVersion"
+    androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
+
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoAndroidVersion"
 
 }
 
@@ -192,5 +225,38 @@ sonarqube {
                         '**/R.class'
             }
         }
+    }
+}
+
+task fullCoverageReport(type: JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
+                      '**/*Test*.*', 'android/**/*.*',
+                      '**/*_MembersInjector.class',
+                      '**/Dagger*Component.class',
+                      '**/Dagger*Component$Builder.class',
+                      '**/*_*Factory.class',
+                      '**/*ComponentImpl.class',
+                      '**/*SubComponentBuilder.class']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files([mainSrc]))
+    classDirectories.setFrom(files([debugTree]))
+    executionData.setFrom(fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ]))
+}
+
+// we need all open to run tests which  a we enable only for debug builds.
+project.tasks.whenTaskAdded {
+    if (it.name == "testReleaseUnitTest") {
+        it.enabled = false
     }
 }
