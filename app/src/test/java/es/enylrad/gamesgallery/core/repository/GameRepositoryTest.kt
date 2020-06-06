@@ -22,7 +22,7 @@ class GameRepositoryTest {
     private lateinit var repository: GamesRepository
     private val dao = mock(GamesDao::class.java)
     private val service = mock(IGDBService::class.java)
-    private val remoteDataSource = GamesRemoteDataSource(service)
+    private val remoteDataSource = GamesRemoteDataSource(service, null)
     private val mockRemoteDataSource = spy(remoteDataSource)
 
     @get:Rule

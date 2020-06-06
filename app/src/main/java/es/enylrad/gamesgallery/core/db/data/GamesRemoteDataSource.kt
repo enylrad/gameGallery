@@ -11,7 +11,7 @@ import es.enylrad.gamesgallery.testing.OpenForTesting
  * Works with the IGDB API to get data.
  */
 @OpenForTesting
-class GamesRemoteDataSource(private val service: IGDBService, context: Context) :
+class GamesRemoteDataSource(private val service: IGDBService, context: Context?) :
     BaseDataSource(context) {
 
     suspend fun fetchGames(page: Int, pageSize: Int? = null): Result<List<GameEntity>> {

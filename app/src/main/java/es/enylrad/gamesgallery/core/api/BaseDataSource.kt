@@ -11,7 +11,7 @@ import java.net.SocketTimeoutException
 /**
  * Abstract Base Data source class with error handling
  */
-abstract class BaseDataSource(val context: Context) {
+abstract class BaseDataSource(val context: Context?) {
 
     companion object {
         const val TAG = "BaseDataSource"
@@ -48,14 +48,14 @@ abstract class BaseDataSource(val context: Context) {
                 val report = "${response.code()} : ${response.message()}"
                 val exception = RetrofitException.MaintenanceException(report)
 
-                Result.error(context.getString(exception.messageRes))
+                Result.error(context?.getString(exception.messageRes) ?: "Error")
             }
             else -> {
                 val report = "${response.code()} : ${response.message()}"
                 val exception = RetrofitException.ServerException(report)
 
                 reportCrash(exception, TAG)
-                Result.error(context.getString(exception.messageRes))
+                Result.error(context?.getString(exception.messageRes) ?: "Error")
             }
         }
     }
@@ -64,7 +64,7 @@ abstract class BaseDataSource(val context: Context) {
         val e = exception.getRetrofitError()
         reportCrash(e, TAG)
         Timber.e(e)
-        return Result.error(context.getString(e.messageRes))
+        return Result.error(context?.getString(e.messageRes) ?: "Error")
     }
 
 }
