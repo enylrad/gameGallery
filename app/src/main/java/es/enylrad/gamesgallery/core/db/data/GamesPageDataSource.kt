@@ -2,6 +2,7 @@ package es.enylrad.gamesgallery.core.db.data
 
 
 import androidx.paging.PageKeyedDataSource
+import es.enylrad.gamesgallery.commons.utils.reportCrash
 import es.enylrad.gamesgallery.core.constants.PAGE_SIZE
 import es.enylrad.gamesgallery.core.db.GamesDao
 import es.enylrad.gamesgallery.core.db.Result
@@ -19,6 +20,10 @@ class GamesPageDataSource(
     private val gamesDao: GamesDao,
     private val scope: CoroutineScope
 ) : PageKeyedDataSource<Int, GameEntity>() {
+
+    companion object {
+        const val TAG = "GamesPageDataSource"
+    }
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -56,14 +61,14 @@ class GamesPageDataSource(
         }
     }
 
-    private fun getJobErrorHandler() = CoroutineExceptionHandler { _, e ->
-        postError(e.message ?: e.toString())
+    private fun getJobErrorHandler() = CoroutineExceptionHandler { _, t ->
+        reportCrash(t, TAG)
+        postError(t.message ?: t.toString())
     }
 
     private fun postError(message: String) {
         Timber.e("An error happened: $message")
-        // TODO network error handling
-        //networkState.postValue(NetworkState.FAILED)
+        // TODO
     }
 
 }

@@ -1,5 +1,6 @@
 package es.enylrad.gamesgallery.core.db.data
 
+import android.content.Context
 import es.enylrad.gamesgallery.core.api.BaseDataSource
 import es.enylrad.gamesgallery.core.api.IGDBService
 import es.enylrad.gamesgallery.core.db.Result
@@ -10,7 +11,8 @@ import es.enylrad.gamesgallery.testing.OpenForTesting
  * Works with the IGDB API to get data.
  */
 @OpenForTesting
-class GamesRemoteDataSource(private val service: IGDBService) : BaseDataSource() {
+class GamesRemoteDataSource(private val service: IGDBService, context: Context) :
+    BaseDataSource(context) {
 
     suspend fun fetchGames(page: Int, pageSize: Int? = null): Result<List<GameEntity>> {
         val filter =

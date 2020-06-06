@@ -60,10 +60,16 @@ class GamesRepository(
 
         private var instance: GamesRepository? = null
 
-        fun getInstance(gamesDao: GamesDao, gamesRemoteDataSource: GamesRemoteDataSource) =
+        fun getInstance(
+            gamesDao: GamesDao,
+            gamesRemoteDataSource: GamesRemoteDataSource
+        ) =
             instance ?: synchronized(this) {
                 instance
-                    ?: GamesRepository(gamesDao, gamesRemoteDataSource).also { instance = it }
+                    ?: GamesRepository(
+                        gamesDao,
+                        gamesRemoteDataSource
+                    ).also { instance = it }
             }
     }
 }

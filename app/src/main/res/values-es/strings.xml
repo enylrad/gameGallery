@@ -31,4 +31,8 @@
 
     <!--Errors-->
     <string name="fail_auth">Ha ocurrido algún error al autencicarse.</string>
+    <string name="exception_api_mantinance">The service is under maintenance</string>
+    <string name="exception_api_retrofit">An error has occurred</string>
+    <string name="exception_api_server">An error has occurred</string>
+    <string name="exception_api_time_out">The server took a long time to respond</string>
 </resources>

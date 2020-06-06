@@ -36,4 +36,8 @@
 
     <!--Errors-->
     <string name="fail_auth">Authentication Failed.</string>
+    <string name="exception_api_mantinance">El servicio se encuentra en mantenimiento</string>
+    <string name="exception_api_retrofit">Ha ocurrido un error</string>
+    <string name="exception_api_server">Ha ocurrido un error</string>
+    <string name="exception_api_time_out">El servidor ha tardado mucho en responder</string>
 </resources>

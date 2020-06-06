@@ -7,7 +7,7 @@ package es.enylrad.gamesgallery.core.db
  * `LiveData<Result<T>>` to pass back the latest data to the UI with its fetch status.
  */
 
-data class Result<out T>(val status: Status, val data: T?, val message: String?) {
+data class Result<out T>(val status: Status, val data: T?, val message: String? = null) {
 
     enum class Status {
         SUCCESS,

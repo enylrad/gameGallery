@@ -5,6 +5,6 @@ import es.enylrad.gamesgallery.core.db.data.GamesRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single { GamesRemoteDataSource(get()) }
+    single { GamesRemoteDataSource(get(), get()) }
     single { GamesRepository.getInstance(get(), get()) }
 }
