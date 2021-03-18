@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import es.enylrad.gamesgallery.core.db.converters.CoverConverter
 import es.enylrad.gamesgallery.core.sealed.CategoryGame
 import es.enylrad.gamesgallery.core.sealed.StatusGame
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "games")
 @Parcelize

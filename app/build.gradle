@@ -5,7 +5,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-allopen'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
@@ -105,9 +105,6 @@ dependencies {
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
-    // Room Debug Web
-    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.roomViewerVersion"
-
     // Work
     implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
 
@@ -121,9 +118,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifeCycleVersion"
 
     // Injection
-    implementation "org.koin:koin-androidx-viewmodel:$rootProject.koinVersion"
-    implementation "org.koin:koin-androidx-scope:$rootProject.koinVersion"
-    implementation "org.koin:koin-android:$rootProject.koinVersion"
+    implementation "io.insert-koin:koin-android:$rootProject.koinVersion"
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
@@ -139,12 +134,13 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:$rootProject.fbAnalyticsVersion"
-    implementation "com.google.firebase:firebase-crashlytics:$rootProject.fbCrashlyticsVersion"
-    implementation "com.google.firebase:firebase-firestore-ktx:$rootProject.fbFirestoreVersion"
-    implementation "com.google.firebase:firebase-dynamic-links:$rootProject.fbDynamicLinkVersion"
-    implementation "com.google.firebase:firebase-auth:$rootProject.fbAuthVersion"
-    implementation "com.google.firebase:firebase-perf:$rootProject.fbPerfVersion"
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseBom")
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
+    implementation "com.google.firebase:firebase-dynamic-links-ktx"
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.firebase:firebase-perf-ktx"
 
     // Play Services
     implementation "com.google.android.gms:play-services-auth:$rootProject.psAuthVersion"

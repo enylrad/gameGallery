@@ -1,6 +1,6 @@
 package es.enylrad.gamesgallery.core.di
 
-import dagger.Provides
+import com.google.android.datatransport.runtime.dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
