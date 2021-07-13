@@ -4,41 +4,41 @@ buildscript {
     // Define versions in a single place
     ext {
         // SDK and tools
-        compileSdkVersion = 29
+        compileSdkVersion = 30
         minSdkVersion = 21
-        targetSdkVersion = 29
+        targetSdkVersion = 30
 
-        kotlinVersion = '1.4.31'
+        kotlinVersion = '1.5.20'
 
         // App dependencies
-        appCompatVersion = '1.2.0'
-        recyclerViewVersion = '1.1.0'
+        appCompatVersion = '1.3.0'
+        recyclerViewVersion = '1.2.1'
         constraintLayoutVersion = '2.0.4'
-        coroutinesVersion = '1.3.3'
+        coroutinesVersion = '1.5.1'
         glideVersion = '4.12.0'
-        navigationVersion = '2.3.4'
-        navigationArgsVersion = '1.0.0'
-        ktxVersion = '1.3.2'
-        materialVersion = '1.3.0'
-        roomVersion = '2.2.6'
+        navigationVersion = '2.3.5'
+        ktxVersion = '1.6.0'
+        materialVersion = '1.4.0'
+        roomVersion = '2.3.0'
         roomViewerVersion = '1.0.6'
         workVersion = '2.5.0'
         pagingVersion = '2.1.2'
-        lifeCycleVersion = '2.2.0'
-        koinVersion = '3.0.1-beta-1'
+        lifeCycleVersion = '2.3.1'
+        koinVersion = '3.1.2'
         retrofitVersion = '2.9.0'
         retrofitScalarsVersion = '2.9.0'
         okhttpVersion = '5.0.0-alpha.2'
-        firebaseBom = '26.7.0'
-        fbCrashlyticsGradleVersion = '2.1.1'
+        firebaseBom = '28.2.0'
+        okhttpBom = "4.9.0"
+        fbCrashlyticsGradleVersion = '2.5.2'
         fbPerfPluginVersion = '1.3.1'
         psAuthVersion = '19.0.0'
         psPerfVersion = '1.3.1'
-        lottieVersion = '3.6.1'
+        lottieVersion = '3.7.1'
         chuckVersion = '1.1.0'
         timberVersion = '4.7.1'
         circleImgVersion = '3.1.0'
-        gradleVersion = '4.1.2'
+        gradleVersion = '7.0.0-beta05'
         safeArgsVersion = '1.0.0'
         fbPluginsVersion = '2.0.0'
         aptVersion = '1.8'
@@ -49,19 +49,19 @@ buildscript {
 
         // Testing
         junitVersion = '4.13.2'
-        espressoVersion = '3.3.0'
+        espressoVersion = '3.4.0'
         coreTestingVersion = '2.1.0'
         jacocoVersion = '0.8.4'
         runnerVersion = '1.0.1'
         uiAutomatorVersion = '2.2.0'
-        mockitoVersion = '2.25.0'
+        mockitoVersion = '3.11.2'
         mockitoAllVersion = '1.10.19'
-        mockitoAndroidVersion = '2.25.0'
+        mockitoAndroidVersion = '3.11.2'
         mockwebserverVersion = '5.0.0-alpha.2'
-        testExtJunit = '1.1.2'
-        testCoreVersion = '1.3.0'
-        testRunnerVersion = '1.3.0'
-        testRulesVersion = '1.3.0'
+        testExtJunit = '1.1.3'
+        testCoreVersion = '1.4.0'
+        testRunnerVersion = '1.4.0'
+        testRulesVersion = '1.4.0'
 
     }
 
@@ -78,7 +78,7 @@ buildscript {
         classpath "com.neenbedankt.gradle.plugins:android-apt:$aptVersion"
 
         // Arch
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigationArgsVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
 
         // Firebase
         classpath "com.google.firebase:firebase-plugins:$fbPluginsVersion"

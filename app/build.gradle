@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'kotlin-android'
@@ -12,7 +11,8 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
-apply plugin: "org.sonarqube"
+apply from: "sonar.gradle"
+apply from: "jacoco.gradle"
 
 allOpen {
     // allows mocking for classes w/o directly opening them for release builds
@@ -22,7 +22,7 @@ allOpen {
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "es.enylrad.gamesgallery"
@@ -67,11 +67,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "11"
+        useIR = true
     }
 
     buildFeatures {
@@ -101,8 +103,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
 
     // Room
-    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     // Work
@@ -112,7 +114,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$rootProject.pagingVersion"
 
     // LifeCycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifeCycleVersion"
@@ -130,8 +131,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$rootProject.retrofitScalarsVersion"
 
     // OkHttp
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
+    implementation platform("com.squareup.okhttp3:okhttp-bom:$rootProject.okhttpBom")
+    implementation "com.squareup.okhttp3:okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseBom")
@@ -158,9 +160,6 @@ dependencies {
     // Circle ImageView
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImgVersion"
 
-    // Fixes
-    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
-
     // Test
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockwebserverVersion"
@@ -175,7 +174,7 @@ dependencies {
     androidTestImplementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
     androidTestImplementation "com.google.android.material:material:$rootProject.materialVersion"
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:$rootProject.espressoVersion"){}
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
@@ -185,74 +184,4 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
     androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoAndroidVersion"
-
-}
-
-sonarqube {
-    properties {
-        def props = new Properties()
-        def propFile = file('sonar-credentials.properties')
-        if (propFile.canRead()) {
-            props.load(new FileInputStream(propFile))
-
-            def keyUser = 'SONAR-USER'
-            def keyPassword = 'SONAR-PASSWORD'
-
-            if (props != null
-                    && props.containsKey(keyUser)
-                    && props.containsKey(keyPassword)) {
-
-                def user = props[keyUser]
-                def password = props[keyPassword]
-
-                property "sonar.projectName", "GameGallery"
-                property "sonar.projectKey", "es.enylrad.gamesgallery"
-                property "sonar.host.url", "http://localhost:9000"
-                property "sonar.login", "$user"
-                property "sonar.password", "$password"
-                property "sonar.tests", ["src/test/java"]
-                property "sonar.test.inclusions", "**/*Test*/**"
-                property "sonar.sourceEncoding", "UTF-8"
-                property "sonar.sources", "src/main/java"
-                property "sonar.exclusions", '**/*Test*/**,' +
-                        '*.json,' +
-                        '**/*test*/**,' +
-                        '**/.gradle/**,' +
-                        '**/R.class'
-            }
-        }
-    }
-}
-
-task fullCoverageReport(type: JacocoReport) {
-    dependsOn 'testDebugUnitTest'
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
-                      '**/*Test*.*', 'android/**/*.*',
-                      '**/*_MembersInjector.class',
-                      '**/Dagger*Component.class',
-                      '**/Dagger*Component$Builder.class',
-                      '**/*_*Factory.class',
-                      '**/*ComponentImpl.class',
-                      '**/*SubComponentBuilder.class']
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
-
-    sourceDirectories.setFrom(files([mainSrc]))
-    classDirectories.setFrom(files([debugTree]))
-    executionData.setFrom(fileTree(dir: "$buildDir", includes: [
-            "jacoco/testDebugUnitTest.exec",
-            "outputs/code-coverage/connected/*coverage.ec"
-    ]))
-}
-
-// we need all open to run tests which  a we enable only for debug builds.
-project.tasks.whenTaskAdded {
-    if (it.name == "testReleaseUnitTest") {
-        it.enabled = false
-    }
 }
